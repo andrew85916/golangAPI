@@ -1,0 +1,15 @@
+{
+    "auth":{
+        "hash_salt":"hash_salt",
+        "signing_key":"signing_key",
+        "token_ttl": 100
+    },
+    "database":{
+        "host":"localhost",
+        "port":"3306",
+        "user":"root",
+        "password":"user85916",
+        "name":"golang_api"
+        
+    }
+}

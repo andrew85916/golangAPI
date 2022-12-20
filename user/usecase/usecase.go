@@ -70,9 +70,9 @@ func (u *UserUsecase) SignIn(username, password string) (string, error) {
 		return "", errMessage.ErrUserNotFound
 	}
 	claims := AuthClaims{
-		User: user,
+		User:           user,
 		StandardClaims: jwt.StandardClaims{
-			ExpiresAt: jwt.At(time.Now().Add(u.expireDuration)),
+			// ExpiresAt: jwt.At(time.Now().Add(u.expireDuration)),
 		},
 	}
 

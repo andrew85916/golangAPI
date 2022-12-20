@@ -48,6 +48,8 @@ func (m *AuthMiddleware) AuthorizeJWT(ctx *gin.Context) {
 		return
 	}
 
-	ctx.Set("user", user)
+	// Store user.Username info into Context
+	// Get Username info from ctx.Get("username")
+	ctx.Set("username", user.Username)
 	ctx.Next()
 }

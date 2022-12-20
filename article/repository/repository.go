@@ -16,14 +16,6 @@ func NewArticleRepository(orm *gorm.DB) domain.ArticleRepository {
 	}
 }
 
-// type ArticleRepository interface {
-// 	GetArticleList(map[string]interface{}) ([]*Article, error)
-// 	GetArticle(article *Article) (*Article, error)
-// 	CreateArticle(article *Article) error
-// 	UpdateArticle(article *Article) error
-// 	DeleteArticle(article *Article) error
-// }
-
 func (a *articleRepository) CreateArticle(article *domain.Article) error {
 
 	err := a.orm.Create(&article).Error
@@ -35,11 +27,15 @@ func (a *articleRepository) CreateArticle(article *domain.Article) error {
 
 func (a *articleRepository) GetArticleListByAuthor(author string) ([]*domain.Article, error) {
 	articles := make([]*domain.Article, 0)
-	// articleList := make([]*domain.Article, 0)
-	// err := a.orm.Where("author=?", author).Find(articlesList,artic).Error
+
 	err := a.orm.Where("author=?", author).Find(&articles).Error
-	// articles := make([]*domain.Article, 0)
-	// result := a.orm.Find(&articles)
+
+	return articles, err
+}
+
+func (a *articleRepository) GetOthersArticleList(author string) ([]*domain.Article, error) {
+	articles := make([]*domain.Article, 0)
+	err := a.orm.Not("author=?", author).Find(&articles).Error
 	return articles, err
 }
 
@@ -59,7 +55,9 @@ func (a *articleRepository) UpdateArticle(article *domain.Article) error {
 	err := a.orm.Save(&article).Error
 	return err
 }
-func (a *articleRepository) DeleteArticle(article *domain.Article) error {
-	err := a.orm.Save(&article).Error
+func (a *articleRepository) DeleteArticleById(id int) error {
+	article := new(domain.Article)
+
+	err := a.orm.Where("id=?", id).Delete(&article).Error
 	return err
 }

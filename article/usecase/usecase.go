@@ -23,7 +23,13 @@ func (ar *ArticleUsecase) GetArticleListByAuthor(author string) ([]*domain.Artic
 
 }
 
-func (a *ArticleUsecase) PostArticle(author, content string) error {
+func (ar *ArticleUsecase) GetOthersArticleList(author string) ([]*domain.Article, error) {
+	articles, err := ar.articleRepo.GetOthersArticleList(author)
+
+	return articles, err
+}
+
+func (ar *ArticleUsecase) PostArticle(author, content string) error {
 
 	article := &domain.Article{
 		Author:    author,
@@ -32,7 +38,7 @@ func (a *ArticleUsecase) PostArticle(author, content string) error {
 		UpdatedAt: time.Now(),
 	}
 
-	err := a.articleRepo.CreateArticle(article)
+	err := ar.articleRepo.CreateArticle(article)
 	if err != nil {
 		return err
 	}
@@ -40,15 +46,7 @@ func (a *ArticleUsecase) PostArticle(author, content string) error {
 
 }
 
-// func (u *UserUsecase) SignUp(username, password string) error {
-// 	// Adding hash salt SHA256
-// 	pwd := sha256.New()
-// 	pwd.Write([]byte(password))
-// 	pwd.Write([]byte(u.hashSalt))
-
-// 	user := &domain.User{
-// 		Username: username,
-// 		Password: fmt.Sprintf("%x", pwd.Sum(nil)),
-// 	}
-// 	return u.repo.CreateUser(user)
-// }
+func (ar *ArticleUsecase) DeleteArticleById(id int) error {
+	err := ar.articleRepo.DeleteArticleById(id)
+	return err
+}

@@ -12,7 +12,6 @@ import (
 	_userRepo "golang_api/user/repository"
 	_userUsecase "golang_api/user/usecase"
 
-	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
 	"gorm.io/driver/mysql"
@@ -39,17 +38,31 @@ func NewApp() *App {
 	}
 }
 
+func CORSMiddleware() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		ctx.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+		ctx.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
+		ctx.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With")
+		ctx.Writer.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS, GET, PUT,DELETE")
+
+		if ctx.Request.Method == "OPTIONS" {
+			ctx.AbortWithStatus(204)
+			return
+		}
+
+		ctx.Next()
+	}
+}
+
 func (a *App) Run() {
 	// Init gin handler
 	router := gin.Default()
 	// Cross-Origin Resource Sharing
-	corsConfig := cors.DefaultConfig()
-	corsConfig.AllowAllOrigins = true
 
 	router.Use(
 		gin.Recovery(),
 		gin.Logger(),
-		cors.New(corsConfig),
+		CORSMiddleware(),
 	)
 	// Set up http handlers
 	// SignUp/SignIn endpoints
@@ -59,6 +72,7 @@ func (a *App) Run() {
 	authMiddleware := _userMiddleware.NewAuthMiddleware(a.userUC)
 	api := router.Group("/api", authMiddleware)
 	// api := router.Group("/api")
+
 	_articleHttp.NewArticleHandler(api, a.articleUC)
 
 	router.Run()

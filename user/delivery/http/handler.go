@@ -18,7 +18,6 @@ func NewUserHandler(router *gin.Engine, us domain.UserUsecase) {
 	}
 	router.POST("/user/sign_in", handler.SignIn)
 	router.POST("/user/sign_up", handler.SignUp)
-
 }
 
 type signInput struct {

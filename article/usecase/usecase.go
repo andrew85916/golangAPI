@@ -45,6 +45,20 @@ func (ar *ArticleUsecase) PostArticle(author, content string) error {
 	return nil
 
 }
+func (ar *ArticleUsecase) UpdateArticleContentById(id int64, content string) error {
+
+	article := &domain.Article{
+		ID:        id,
+		Content:   content,
+		UpdatedAt: time.Now(),
+	}
+
+	err := ar.articleRepo.UpdateArticleContent(article)
+	if err != nil {
+		return err
+	}
+	return nil
+}
 
 func (ar *ArticleUsecase) DeleteArticleById(id int) error {
 	err := ar.articleRepo.DeleteArticleById(id)

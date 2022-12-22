@@ -28,34 +28,26 @@ func (a *articleRepository) CreateArticle(article *domain.Article) error {
 func (a *articleRepository) GetArticleListByAuthor(author string) ([]*domain.Article, error) {
 	articles := make([]*domain.Article, 0)
 
-	err := a.orm.Where("author=?", author).Find(&articles).Error
+	err := a.orm.Order("id desc").Where("author=?", author).Find(&articles).Error
 
 	return articles, err
 }
 
 func (a *articleRepository) GetOthersArticleList(author string) ([]*domain.Article, error) {
 	articles := make([]*domain.Article, 0)
-	err := a.orm.Not("author=?", author).Find(&articles).Error
+	err := a.orm.Order("id desc").Not("author=?", author).Find(&articles).Error
 	return articles, err
 }
 
-// func (a *articleRepository) GetArticleListByUser(articles map[string]interface{}) ([]*domain.Article, error) {
+func (a *articleRepository) UpdateArticleContent(article *domain.Article) error {
 
-// 	articleList := make([]*domain.Article, 0)
-// 	err := a.orm.Find(articleList, articles).Error
-// 	return articleList, err
-// }
-
-// func (a *ArticleRepository) GetArticle(article *domain.Article) (*domain.Article, error) {
-// 	err := a.orm.Save(&article).Error
-// 	return err
-// }
-
-func (a *articleRepository) UpdateArticle(article *domain.Article) error {
-	err := a.orm.Save(&article).Error
+	// err := a.orm.Model(&article).Updates(map[string]interface{}{"content": content, "updated_at": updateAt}).Error
+	err := a.orm.Debug().Model(&article).Updates(map[string]interface{}{"content": article.Content, "updated_at": article.UpdatedAt}).Error
+	// err := a.orm.Model(&article).Updates(map[string]interface{}{"content": article.Content, "updated_at": article.UpdatedAt}).Error
 	return err
 }
 func (a *articleRepository) DeleteArticleById(id int) error {
+
 	article := new(domain.Article)
 
 	err := a.orm.Where("id=?", id).Delete(&article).Error

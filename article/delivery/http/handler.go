@@ -13,6 +13,11 @@ type articleGetInput struct {
 	Content string `json:"content"`
 }
 
+type articleUpdateInput struct {
+	Id      int64  `json:"id"`
+	Content string `json:"content"`
+}
+
 type articleDeleteInput struct {
 	Id int `json:"id"`
 }
@@ -44,6 +49,7 @@ func NewArticleHandler(r *gin.RouterGroup, us domain.ArticleUsecase) {
 	r.GET("/get_self_articles", handler.GetSelfArticleList)
 	r.GET("/get_others_articles", handler.GetOthersArticleList)
 	r.GET("/get_username", handler.GetUsernameByToken)
+	r.PUT("/update_article", handler.UpdateArticleContentById)
 	r.DELETE("/delete_article", handler.DeleteArticleById)
 }
 
@@ -128,6 +134,20 @@ func (ar *ArticleHandler) GetUsernameByToken(ctx *gin.Context) {
 	}
 
 	ctx.JSON(http.StatusOK, getUsernameResponse{Username: usernameStr})
+}
+
+func (ar *ArticleHandler) UpdateArticleContentById(ctx *gin.Context) {
+	arIn := new(articleUpdateInput)
+	if err := ctx.BindJSON(arIn); err != nil {
+		ctx.AbortWithStatus(http.StatusBadRequest)
+		return
+	}
+	err := ar.usecase.UpdateArticleContentById(arIn.Id, arIn.Content)
+	if err != nil {
+		ctx.AbortWithStatus(http.StatusInternalServerError)
+		return
+	}
+	ctx.Status(http.StatusOK)
 }
 
 func (ar *ArticleHandler) DeleteArticleById(ctx *gin.Context) {

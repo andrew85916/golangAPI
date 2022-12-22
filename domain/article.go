@@ -15,7 +15,7 @@ type ArticleRepository interface {
 	// GetArticleList(article *Article) ([]*Article, error)
 	GetOthersArticleList(author string) ([]*Article, error)
 	CreateArticle(article *Article) error
-	UpdateArticle(article *Article) error
+	UpdateArticleContent(article *Article) error
 	DeleteArticleById(id int) error
 }
 
@@ -24,5 +24,6 @@ type ArticleUsecase interface {
 	// GetArticleList(article *Article) ([]*Article, error)
 	GetOthersArticleList(author string) ([]*Article, error)
 	PostArticle(author string, content string) error
+	UpdateArticleContentById(id int64, content string) error
 	DeleteArticleById(id int) error
 }

@@ -12,7 +12,6 @@ type Article struct {
 
 type ArticleRepository interface {
 	GetArticleListByAuthor(author string) ([]*Article, error)
-	// GetArticleList(article *Article) ([]*Article, error)
 	GetOthersArticleList(author string) ([]*Article, error)
 	CreateArticle(article *Article) error
 	UpdateArticleContent(article *Article) error
@@ -21,7 +20,6 @@ type ArticleRepository interface {
 
 type ArticleUsecase interface {
 	GetArticleListByAuthor(author string) ([]*Article, error)
-	// GetArticleList(article *Article) ([]*Article, error)
 	GetOthersArticleList(author string) ([]*Article, error)
 	PostArticle(author string, content string) error
 	UpdateArticleContentById(id int64, content string) error

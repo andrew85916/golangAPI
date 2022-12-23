@@ -2,7 +2,7 @@
     "auth":{
         "hash_salt":"hash_salt",
         "signing_key":"signing_key",
-        "token_ttl": 100
+        "token_ttl": 100000
     },
     "database":{
         "host":"localhost",

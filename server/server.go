@@ -38,6 +38,7 @@ func NewApp() *App {
 	}
 }
 
+// Cross-Origin Resource Sharing
 func CORSMiddleware() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		ctx.Writer.Header().Set("Access-Control-Allow-Origin", "*")
@@ -57,7 +58,6 @@ func CORSMiddleware() gin.HandlerFunc {
 func (a *App) Run() {
 	// Init gin handler
 	router := gin.Default()
-	// Cross-Origin Resource Sharing
 
 	router.Use(
 		gin.Recovery(),
@@ -71,8 +71,6 @@ func (a *App) Run() {
 	// API endpoints
 	authMiddleware := _userMiddleware.NewAuthMiddleware(a.userUC)
 	api := router.Group("/api", authMiddleware)
-	// api := router.Group("/api")
-
 	_articleHttp.NewArticleHandler(api, a.articleUC)
 
 	router.Run()

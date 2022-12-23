@@ -1,11 +1,5 @@
 package domain
 
-// type User struct {
-// 	ID       string `json:"id"`
-// 	Username string `json:"username"`
-// 	Password string `json:"password"`
-// }
-// `gorm:"primary_key:auto_increment" json:"id"`
 type User struct {
 	ID       string `gorm:"primary_key:auto_increment" json:"id"`
 	Username string `gorm:"uniqueIndex;type:varchar(255)" json:"username"`
@@ -20,7 +14,6 @@ type UserRepository interface {
 	DeleteUser(user *User) error
 }
 
-//
 type UserUsecase interface {
 	SignUp(username, password string) error
 	SignIn(username, password string) (string, error)

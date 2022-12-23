@@ -42,10 +42,8 @@ func NewArticleHandler(r *gin.RouterGroup, us domain.ArticleUsecase) {
 	handler := &ArticleHandler{
 		usecase: us,
 	}
-	// r.GET("/articles", handler.GetArticleListByUser)
 	r.POST("/post_article", handler.PostArticle)
 	r.GET("/get_author_articles", handler.GetArticleListByAuthor)
-	// r.GET("/get_articles", handler.GetArticleList)
 	r.GET("/get_self_articles", handler.GetSelfArticleList)
 	r.GET("/get_others_articles", handler.GetOthersArticleList)
 	r.GET("/get_username", handler.GetUsernameByToken)
